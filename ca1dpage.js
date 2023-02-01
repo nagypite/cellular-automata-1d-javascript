@@ -64,6 +64,19 @@ function Run()
         SetCellFormats();
 
         APP.ca1d.Rule = parseInt(document.getElementById("udRule").value);
+
+        if (document.getElementById("udBoundary").value.length) {
+            let boundary = document.getElementById("udBoundary").value.split('');
+            if (boundary.length < 2) {
+                boundary[1] = boundary[0];
+            }
+
+            APP.ca1d.BoundaryCircular = false;
+            APP.ca1d.BoundaryCells = boundary;
+        }
+        else {
+            APP.ca1d.BoundaryCircular = true;
+        }
         let Iterations = parseInt(document.getElementById("udIterations").value);
 
         APP.ca1d.Iterate(Iterations);

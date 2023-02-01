@@ -7,6 +7,8 @@ class CellularAutomaton1D
         this._NextState = [];
         this._NumberOfCells = 32;
         this._Rule = 0;
+        this._BoundaryCircular = true;
+        this._BoundaryCells = [];
         this._StateChangedEventHandlers = [];
         this._NumberOfCellsChangedEventHandlers = [];
     }
@@ -25,6 +27,12 @@ class CellularAutomaton1D
 
 	get Rule() { return this._Rule; }
 	set Rule(Rule) { this._Rule = Rule; }
+
+	get BoundaryCircular() { return this._BoundaryCircular; }
+	set BoundaryCircular(BoundaryCircular) { this._BoundaryCircular = BoundaryCircular; }
+
+	get BoundaryCells() { return this._BoundaryCells; }
+	set BoundaryCells(BoundaryCells) { this._BoundaryCells = BoundaryCells; }
 
 	get NumberOfCells() { return this._NumberOfCells; }
 	set NumberOfCells(NumberOfCells)
@@ -94,8 +102,8 @@ class CellularAutomaton1D
 
     CalculateNextState()
     {
-        let PrevIndex;
-        let NextIndex;
+        let PrevCellState;
+        let NextCellState;
         let Neighbourhood;
         let RuleAsBinary = this._Rule.toString(2);
 
@@ -108,16 +116,16 @@ class CellularAutomaton1D
         for (let i = 0; i < this._NumberOfCells; i++)
         {
             if (i == 0)
-                PrevIndex = this._NumberOfCells - 1;
+                PrevCellState = this._BoundaryCircular ? this._CurrentState[this._NumberOfCells - 1] : this._BoundaryCells[0];
             else
-                PrevIndex = i - 1;
+                PrevCellState = this._CurrentState[i - 1];
 
             if (i == (this._NumberOfCells - 1))
-                NextIndex = 0;
+                NextCellState = this._BoundaryCircular ? this._CurrentState[0] : this._BoundaryCells[1];
             else
-                NextIndex = i + 1;
+                NextCellState = this._CurrentState[i + 1];
 
-            Neighbourhood = this._CurrentState[PrevIndex].toString() + this._CurrentState[i].toString() + this._CurrentState[NextIndex].toString();
+            Neighbourhood = PrevCellState.toString() + this._CurrentState[i].toString() + NextCellState.toString();
 
             switch (Neighbourhood)
             {
