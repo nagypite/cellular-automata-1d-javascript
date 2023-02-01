@@ -17,6 +17,8 @@
     width: 681px;
     height: 42px;
     background-image: url("banner.png");
+    text-align: right;
+    color: white;
 }
 
 .linkpanel
