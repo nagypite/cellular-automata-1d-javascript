@@ -37,9 +37,9 @@ class CellularAutomaton1D
     // METHODS
     //-------------------------------------------------------------------
 
-    FireStateChangedEvent()
+    FireStateChangedEvent(edit)
     {
-        this._StateChangedEventHandlers.every(function (Handler) { Handler(); });
+        this._StateChangedEventHandlers.every(function (Handler) { Handler(edit); });
     }
 
     FireNumberOfCellsChangedEvent()
@@ -52,6 +52,29 @@ class CellularAutomaton1D
         for (let i = 0; i < this._NumberOfCells; i++)
         {
             this._CurrentState[i] = parseInt(Math.random() * 2);
+        }
+
+        this.FireStateChangedEvent();
+    }
+
+    InitializeValue(initValue)
+    {
+        let initAsBinary = '';
+        if (initValue.length) {
+            if (initValue.length == this._NumberOfCells) {
+                initAsBinary = initValue;
+            }
+            else {
+                initAsBinary = parseInt(initValue).toString(2);
+            }
+        }
+        else {
+            initAsBinary = ''.padStart(this._NumberOfCells, '0');
+        }
+
+        for (let i = 0; i < this._NumberOfCells; i++)
+        {
+            this._CurrentState[i] = initAsBinary[i] || '0';
         }
 
         this.FireStateChangedEvent();
@@ -76,9 +99,11 @@ class CellularAutomaton1D
         let Neighbourhood;
         let RuleAsBinary = this._Rule.toString(2);
 
-		// left pad binary to 8
+        // left pad binary to 8
         while (RuleAsBinary.length < 8)
             RuleAsBinary = "0" + RuleAsBinary;
+
+        console.log('rule', RuleAsBinary);
 
         for (let i = 0; i < this._NumberOfCells; i++)
         {
@@ -139,5 +164,11 @@ class CellularAutomaton1D
         {
             this.CalculateNextState();
         }
+    }
+
+    ToggleCell(cellId)
+    {
+        this._CurrentState[cellId] = this._CurrentState[cellId] == '0' ? '1' : '0';
+        this.FireStateChangedEvent(true);
     }
 }

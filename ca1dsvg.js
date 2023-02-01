@@ -13,9 +13,14 @@ class CellularAutomaton1DSVG
 
         let that = this;
 
-        this._CA.StateChangedEventHandlers.push(function()
+        this._CA.StateChangedEventHandlers.push(function(edit)
         {
-            that._SetHeight(that._CellSize * that._Iteration);
+            if (edit) {
+                that._Iteration--;
+            }
+            else {
+                that._SetHeight(that._CellSize * that._Iteration);
+            }
             that._DrawState();
         });
 
@@ -47,6 +52,8 @@ class CellularAutomaton1DSVG
 
     _DrawState()
     {
+        let that = this;
+
         for (let i = 0, m = this._CA.NumberOfCells; i < m; i++)
         {
             let rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
@@ -55,6 +62,9 @@ class CellularAutomaton1DSVG
             rect.setAttributeNS(null, 'y', this._Iteration * this._CellSize);
             rect.setAttributeNS(null, 'height', this._CellSize);
             rect.setAttributeNS(null, 'width', this._CellSize);
+            rect.addEventListener('click', function() {
+                that._CA.ToggleCell(i);
+            })
 
             if (this._CA.CurrentState[i] == 0)
             {

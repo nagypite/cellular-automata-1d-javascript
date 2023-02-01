@@ -9,15 +9,27 @@ window.onload = function()
     APP.casvg1d = new CellularAutomaton1DSVG("CASVG", APP.ca1d);
 
     SetEventHandlers();
+		InitializeValue();
 }
 
 
 function SetEventHandlers()
 {
     document.getElementById("btnInitializeToCentre").onclick = InitializeToCentre;
+    document.getElementById("btnInitializeValue").onclick = InitializeValue;
     document.getElementById("btnRandomize").onclick = Randomize;
     document.getElementById("btnRun").onclick = Run;
     document.getElementById("btnClear").onclick = Clear;
+}
+
+
+function InitializeValue()
+{
+    SetCellFormats();
+
+    APP.ca1d.NumberOfCells = parseInt(document.getElementById("udNumberOfCells").value);
+
+    APP.ca1d.InitializeValue(document.getElementById("udInit").value);
 }
 
 
