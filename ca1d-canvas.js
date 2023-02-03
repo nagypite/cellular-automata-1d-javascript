@@ -19,9 +19,25 @@ class CellularAutomaton1DCanvas
 
     let that = this;
 
+    this._canvas.addEventListener('mousedown', function(e) {
+      let rect = that._canvas.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+      let y = e.clientY - rect.top;
+      let cellCol = Math.floor(x/that._CellSize);
+      let cellRow = Math.floor(y/that._CellSize);
+
+      if (that._Debug) console.log('clicked coords', x, y, cellCol, cellRow, cellRow + 1 == that._Iteration);
+
+      // The user clicked on the last row, we should change colors
+      if (cellRow == that._Iteration - 1) {
+        that._CA.ToggleCell(cellCol);
+      }
+    })
+
     this._CA.StateChangedEventHandlers.push(function(edit)
       {
-        if (that._Debug) console.log('drawing state', that);
+        if (that._Debug) console.log('changed state', that, edit);
+
         if (edit) {
           that._Iteration--;
         }

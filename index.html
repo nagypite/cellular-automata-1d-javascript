@@ -23,68 +23,77 @@
 
       <main>
         <div class="row">
-          <div class="col-md-6 col-lg-4 controlpanel border-end border-dark">
+          <div class="col-sm-6 col-md-4 col-lg-2 controlpanel border-end border-dark">
 
             <div class="form-container">
-              <div class="row mb-3">
-                <label for="udNumberOfCells" class="col-sm-6 col-lg-4 col-form-label">Number of Cells</label>
-                <div class="col-sm-6 col-lg-8">
+              <div class="mb-3">
+                <label for="udNumberOfCells" class="form-label">Number of Cells</label>
+                <div class="form-control-wrapper">
                   <input type="number" min="3" max="128" id="udNumberOfCells" class="form-control" value="16" />
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <label for="udInit" class="col-sm-6 col-lg-4 col-form-label">Initialize with value</label>
-                <div class="col-sm-6 col-lg-8">
-                  <input type="text" id="udInit" class="form-control" value="" />
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="udCellSize" class="col-sm-6 col-lg-4 col-form-label">Cell Size</label>
-                <div class="col-sm-6 col-lg-8">
+              <div class="mb-3">
+                <label for="udCellSize" class="form-label">Cell Size</label>
+                <div class="form-control-wrapper">
                   <input type="number" min="2" max="32" id="udCellSize" class="form-control" value="32" />
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <label for="udRule" class="col-sm-6 col-lg-4 col-form-label">Rule</label>
-                <div class="col-sm-6 col-lg-8">
+              <div class="mb-3">
+                <label for="udRule" class="form-label">Rule</label>
+                <div class="form-control-wrapper">
                   <input type="number" min="0" max="255" id="udRule" class="form-control" value="50" />
                 </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="udBoundary" class="col-sm-6 col-lg-4 col-form-label">Boundary</label>
-                <div class="col-sm-6 col-lg-8">
-                  <input type="text" min="0" max="11" id="udBoundary" class="form-control" value="" />
+                <div class="form-text">
+                  Binary or decimal representation of automaton rule. 
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <label for="udIterations" class="col-sm-6 col-lg-4 col-form-label">Iterations</label>
-                <div class="col-sm-6 col-lg-8">
+              <div class="mb-3">
+                <label for="udIterations" class="form-label">Iterations</label>
+                <div class="form-control-wrapper">
                   <input type="number" min="1" max="128" id="udIterations" class="form-control" value="16" />
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <label for="colCellZeroColor" class="col-sm-6 col-lg-4 col-form-label">Cell Zero Color</label>
-                <div class="col-sm-6 col-lg-8">
+              <div class="mb-3">
+                <label for="udBoundary" class="form-label">Boundary</label>
+                <div class="form-control-wrapper">
+                  <input type="text" min="0" max="11" id="udBoundary" class="form-control" value="" />
+                </div>
+                <div class="form-text">
+                  If left empty, automaton is circular. With single "0" or "1" value both boundaries are set empty or full respectively. With two digits left and right boundaries can be set separately. 
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="udInit" class="form-label">Initialize with value</label>
+                <div class="form-control-wrapper">
+                  <input type="text" id="udInit" class="form-control" value="" />
+                </div>
+                <div class="form-text">
+                  Value of first row given in a binary string (with length matching Number of Cells) or decimal representation.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="colCellZeroColor" class="form-label">Cell Zero Color</label>
+                <div class="form-control-wrapper">
                   <input type="color" id="colCellZeroColor" class="form-control form-control-color" value="#FFFFFF" />
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <label for="colCellOneColor" class="col-sm-6 col-lg-4 col-form-label">Cell One Color</label>
-                <div class="col-sm-6 col-lg-8">
+              <div class="mb-3">
+                <label for="colCellOneColor" class="form-label">Cell One Color</label>
+                <div class="form-control-wrapper">
                   <input type="color" id="colCellOneColor" class="form-control form-control-color" value="#000000" />
                 </div>
               </div>
 
-              <div class="row mb-3">
-                <label class="col-sm-6 col-lg-4 col-form-label">Initialization</label>
-                <div class="col-sm-6 col-lg-8">
+              <div class="mb-3">
+                <label class="form-label">Initialization</label>
+                <div class="form-control-wrapper">
 
                   <div class="btn-group d-flex" role="group">
                     <button type="button" class="btn btn-outline-primary w-100" id="btnInitializeValue">with Value</button>
@@ -93,9 +102,9 @@
                   </div>
                 </div>
               </div>
-              <div class="row mb-3">
-                <label class="col-sm-6 col-lg-4 col-form-label">Control</label>
-                <div class="col-sm-6 col-lg-8">
+              <div class="mb-3">
+                <label class="form-label">Control</label>
+                <div class="form-control-wrapper">
 
                   <div class="btn-group d-flex" role="group">
                     <button type="button" class="btn btn-primary w-100" id="btnRun">Run</button>
@@ -107,7 +116,7 @@
             </div>
 
           </div>
-          <div class='col-md-6 col-lg-8'>
+          <div class='col-sm-6 col-md-8 col-lg-10'>
             <div id="canvasdiv">
 
               <canvas id="ca-canvas" height="200" width="200">
