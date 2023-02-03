@@ -1,12 +1,13 @@
 ﻿
 let APP = {ca1d: null,
-           casvg1d: null}
+           caDisplay: null}
 
 
 window.onload = function()
 {
     APP.ca1d = new CellularAutomaton1D();
-    APP.casvg1d = new CellularAutomaton1DSVG("CASVG", APP.ca1d);
+    //APP.caDisplay = new CellularAutomaton1DSVG("CASVG", APP.ca1d);
+    APP.caDisplay = new CellularAutomaton1DCanvas("ca-canvas", APP.ca1d);
 
     SetEventHandlers();
     InitializeValue();
@@ -29,7 +30,7 @@ function InitializeValue()
 
     APP.ca1d.NumberOfCells = parseInt(document.getElementById("udNumberOfCells").value);
 
-    APP.casvg1d.Clear();
+    APP.caDisplay.Clear();
     APP.ca1d.InitializeValue(document.getElementById("udInit").value);
 }
 
@@ -40,7 +41,7 @@ function InitializeToCentre()
 
     APP.ca1d.NumberOfCells = parseInt(document.getElementById("udNumberOfCells").value);
 
-    APP.casvg1d.Clear();
+    APP.caDisplay.Clear();
     APP.ca1d.InitializeToCentre();
 }
 
@@ -51,7 +52,7 @@ function Randomize()
 
     APP.ca1d.NumberOfCells = parseInt(document.getElementById("udNumberOfCells").value);
 
-    APP.casvg1d.Clear();
+    APP.caDisplay.Clear();
     APP.ca1d.Randomize();
 }
 
@@ -89,30 +90,30 @@ function Run()
 
 function Clear()
 {
-    APP.casvg1d.Clear();
+    APP.caDisplay.Clear();
 }
 
 
 function SetCellFormats()
 {
     let NewCellSize = document.getElementById("udCellSize").value;
-    if(NewCellSize !== APP.casvg1d.CellSize)
+    if(NewCellSize !== APP.caDisplay.CellSize)
     {
-        APP.casvg1d.CellSize = NewCellSize;
-        APP.casvg1d.Clear();
+        APP.caDisplay.CellSize = NewCellSize;
+        APP.caDisplay.Clear();
     }
 
     let NewCellZeroColor = document.getElementById("colCellZeroColor").value;
-    if (NewCellZeroColor !== APP.casvg1d.CellZeroColor)
+    if (NewCellZeroColor !== APP.caDisplay.CellZeroColor)
     {
-        APP.casvg1d.CellZeroColor = NewCellZeroColor;
-        APP.casvg1d.Clear();
+        APP.caDisplay.CellZeroColor = NewCellZeroColor;
+        APP.caDisplay.Clear();
     }
 
     let NewCellOneColor = document.getElementById("colCellOneColor").value;
-    if (NewCellOneColor !== APP.casvg1d.CellOneColor)
+    if (NewCellOneColor !== APP.caDisplay.CellOneColor)
     {
-        APP.casvg1d.CellOneColor = NewCellOneColor;
-        APP.casvg1d.Clear();
+        APP.caDisplay.CellOneColor = NewCellOneColor;
+        APP.caDisplay.Clear();
     }
 }
