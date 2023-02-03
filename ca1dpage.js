@@ -61,7 +61,7 @@ function Run()
 {
     if (APP.ca1d.CurrentState[0] === undefined)
     {
-        alert('Cellular Automaton is not initialized.\nPlease click "Initialize to Centre" or "Randomize"');
+        alert('Cellular Automaton is not initialized.\nPlease choose a method by clicling on one of the Initialization buttons.');
     }
     else
     {

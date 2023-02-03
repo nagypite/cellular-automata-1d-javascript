@@ -13,15 +13,20 @@ class CellularAutomaton1DCanvas
     this._CellZeroColor = "#FFFFFF";
     this._CellOneColor = "#000000";
 
+    this._ResizePerRow = true;
+
+    this._Debug = false;
+
     let that = this;
 
     this._CA.StateChangedEventHandlers.push(function(edit)
       {
+        if (that._Debug) console.log('drawing state', that);
         if (edit) {
           that._Iteration--;
         }
         else {
-          that._SetHeight(that._CellSize * that._Iteration, true);
+          //that._SetHeight(that._CellSize * that._Iteration, true);
         }
         that._DrawState();
       });
@@ -29,6 +34,19 @@ class CellularAutomaton1DCanvas
     this._CA.NumberOfCellsChangedEventHandlers.push(function()
       {
         that._SetWidth(that._CellSize * that._CA.NumberOfCells);
+      });
+
+    this._CA.IterationStartEventHandlers.push(function(iterations)
+      {
+        that._ResizePerRow = false;
+        if (that._Debug) console.log('starting iterations', that, iterations);
+        that._SetHeight(that._CellSize * (that._Iteration + iterations), true);
+      });
+
+    this._CA.IterationEndEventHandlers.push(function()
+      {
+        if (that._Debug) console.log('ending iterations', that);
+        that._ResizePerRow = true;
       });
 
     this._SetWidth(this._CellSize * this._CA.NumberOfCells);
@@ -55,7 +73,9 @@ class CellularAutomaton1DCanvas
   _DrawState()
   {
     let that = this;
-    this._SetHeight(this._CellSize * (this._Iteration + 1), true);
+    if (this._ResizePerRow) {
+      this._SetHeight(this._CellSize * (this._Iteration + 1), true);
+    }
 
     for (let i = 0, m = this._CA.NumberOfCells; i < m; i++)
     {
@@ -85,11 +105,11 @@ class CellularAutomaton1DCanvas
   _SetHeight(height, keepData)
   {
     let canvasData;
-    console.log('setting height to', height);
+    if (this._Debug) console.log('setting height to', height);
     if (keepData) {
       canvasData = this._ctx.getImageData(0, 0, this._canvas.width-1, this._canvas.height-1);
 
-      console.log('saved canvas data', canvasData);
+      if (this._Debug) console.log('saved canvas data', canvasData);
     }
 
     this._canvas.setAttribute("height", height);
@@ -101,14 +121,12 @@ class CellularAutomaton1DCanvas
 
   _SetWidth(width)
   {
-    console.log('setting width to', width);
+    if (this._Debug) console.log('setting width to', width);
     this._canvas.setAttribute("width", width);
   }
 
   Clear()
   {
-    // this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);;
-
     this._Iteration = 0;
 
     this._SetHeight(0);

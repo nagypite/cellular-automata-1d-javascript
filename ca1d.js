@@ -10,6 +10,8 @@ class CellularAutomaton1D
         this._BoundaryCircular = true;
         this._BoundaryCells = [];
         this._StateChangedEventHandlers = [];
+        this._IterationStartEventHandlers = [];
+        this._IterationEndEventHandlers = [];
         this._NumberOfCellsChangedEventHandlers = [];
     }
 
@@ -18,6 +20,10 @@ class CellularAutomaton1D
     //---------------------------------------------------
 
 	get StateChangedEventHandlers() { return this._StateChangedEventHandlers; }
+
+	get IterationStartEventHandlers() { return this._IterationStartEventHandlers; }
+
+	get IterationEndEventHandlers() { return this._IterationEndEventHandlers; }
 
 	get NumberOfCellsChangedEventHandlers() { return this._NumberOfCellsChangedEventHandlers; }
 
@@ -48,6 +54,16 @@ class CellularAutomaton1D
     FireStateChangedEvent(edit)
     {
         this._StateChangedEventHandlers.every(function (Handler) { Handler(edit); });
+    }
+
+    FireIterationStartEvent(iterations)
+    {
+        this._IterationStartEventHandlers.every(function (Handler) { Handler(iterations); });
+    }
+
+    FireIterationEndEvent()
+    {
+        this._IterationEndEventHandlers.every(function (Handler) { Handler(); });
     }
 
     FireNumberOfCellsChangedEvent()
@@ -111,8 +127,6 @@ class CellularAutomaton1D
         while (RuleAsBinary.length < 8)
             RuleAsBinary = "0" + RuleAsBinary;
 
-        console.log('rule', RuleAsBinary);
-
         for (let i = 0; i < this._NumberOfCells; i++)
         {
             if (i == 0)
@@ -168,10 +182,12 @@ class CellularAutomaton1D
 
     Iterate(Iterations)
     {
+        this.FireIterationStartEvent(Iterations);
         for(let Iteration = 1; Iteration <= Iterations; Iteration++)
         {
             this.CalculateNextState();
         }
+        this.FireIterationEndEvent();
     }
 
     ToggleCell(cellId)
