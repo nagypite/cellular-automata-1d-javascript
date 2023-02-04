@@ -10,6 +10,7 @@ class CellularAutomaton1DCanvas
     this._Iteration = 0;
 
     this._CellSize = 16;
+    this._CellGridLimit = 10;
     this._CellZeroColor = "#FFFFFF";
     this._CellOneColor = "#000000";
 
@@ -49,13 +50,14 @@ class CellularAutomaton1DCanvas
 
     this._CA.NumberOfCellsChangedEventHandlers.push(function()
       {
+        if (that._Debug) console.log('number of cells changed', that);
         that._SetWidth(that._CellSize * that._CA.NumberOfCells);
       });
 
     this._CA.IterationStartEventHandlers.push(function(iterations)
       {
-        that._ResizePerRow = false;
         if (that._Debug) console.log('starting iterations', that, iterations);
+        that._ResizePerRow = false;
         that._SetHeight(that._CellSize * (that._Iteration + iterations), true);
       });
 
@@ -65,8 +67,8 @@ class CellularAutomaton1DCanvas
         that._ResizePerRow = true;
       });
 
-    this._SetWidth(this._CellSize * this._CA.NumberOfCells);
-    this._SetHeight(this._CellSize * this._Iteration);
+    //this._SetWidth(this._CellSize * this._CA.NumberOfCells);
+    //this._SetHeight(this._CellSize * this._Iteration);
   }
 
   //---------------------------------------------------
@@ -89,18 +91,14 @@ class CellularAutomaton1DCanvas
   _DrawState()
   {
     let that = this;
+    let rectSize = this._CellSize >= this._CellGridLimit ? this._CellSize - 1 : this._CellSize;
+
     if (this._ResizePerRow) {
       this._SetHeight(this._CellSize * (this._Iteration + 1), true);
     }
 
     for (let i = 0, m = this._CA.NumberOfCells; i < m; i++)
     {
-      /*
-            rect.addEventListener('click', function() {
-                that._CA.ToggleCell(i);
-            })
-            */
-
       if (this._CA.CurrentState[i] == 0)
       {
         that._ctx.fillStyle   = this._CellZeroColor;
@@ -112,7 +110,7 @@ class CellularAutomaton1DCanvas
         that._ctx.strokeStyle = this._CellZeroColor;
       }
 
-      that._ctx.fillRect(i * this._CellSize, this._Iteration * this._CellSize, this._CellSize-1, this._CellSize-1);
+      that._ctx.fillRect(i * this._CellSize, this._Iteration * this._CellSize, rectSize, rectSize);
     }
 
     this._Iteration++;
@@ -121,16 +119,16 @@ class CellularAutomaton1DCanvas
   _SetHeight(height, keepData)
   {
     let canvasData;
-    if (this._Debug) console.log('setting height to', height);
-    if (keepData) {
-      canvasData = this._ctx.getImageData(0, 0, this._canvas.width-1, this._canvas.height-1);
+    if (this._Debug) console.log('setting height to', height, 'from', this._canvas.height);
+    if (height > 0 && keepData && this._canvas.height) {
+      canvasData = this._ctx.getImageData(0, 0, this._canvas.width, this._canvas.height);
 
       if (this._Debug) console.log('saved canvas data', canvasData);
     }
 
     this._canvas.setAttribute("height", height);
 
-    if (keepData) {
+    if (height > 0 && keepData && canvasData) {
       this._ctx.putImageData(canvasData, 0, 0);
     }
   }

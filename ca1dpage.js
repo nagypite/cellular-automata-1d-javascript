@@ -10,7 +10,7 @@ window.onload = function()
     APP.caDisplay = new CellularAutomaton1DCanvas("ca-canvas", APP.ca1d);
 
     SetEventHandlers();
-    InitializeValue();
+    InitializeToCentre();
 }
 
 
